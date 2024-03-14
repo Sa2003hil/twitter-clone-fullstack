@@ -7,10 +7,11 @@ import { IoNotificationsOutline } from "react-icons/io5"
 import { FaRegEnvelope } from "react-icons/fa";
 import { CiBookmarkPlus } from "react-icons/ci";
 import { IoPerson } from "react-icons/io5";
-import React from "react";
+import React, { useCallback } from "react";
 import FeedCard from "@/components/FeedCard";
+import { GoogleLogin } from '@react-oauth/google'
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"] })
 
 interface TwitterSidebarButton {
   title: String,
@@ -25,12 +26,10 @@ const sideBarMenuItems: TwitterSidebarButton[] = [
   { title: "Bookmark", icon: <CiBookmarkPlus size={24} className="" /> },
   { title: "Profile", icon: <IoPerson size={24} className="" /> }
 
-
-
-
 ]
 
 export default function Home() {
+  const handleLoginWithGoogle = useCallback((cred: CredentialResponse) => { }, [])
   return (
     <div className={inter.className}>
       <div className="grid grid-cols-12 h-screen w-screen px-52">
@@ -54,7 +53,7 @@ export default function Home() {
             <button className="bg-sky-600 w-full py-2 px-8  rounded-full mt-11  ">Tweet</button>
           </div>
         </div>
-        <div className="col-span-7 border-r-[.2px] border-l-[.2px] border-slate-500">
+        <div className="col-span-6 border-r-[.2px] border-l-[.2px] border-slate-500">
           <FeedCard />
           <FeedCard />
           <FeedCard />
@@ -64,8 +63,12 @@ export default function Home() {
           <FeedCard />
           <FeedCard />
         </div>
-        <div className="col-span-2"></div>
+        <div className="col-span-3">
+          <div className="border p-5">
+            <GoogleLogin onSuccess={cred => console.log(cred)} />
+          </div>
+        </div>
       </div>
     </div>
-  );
+  )
 }
