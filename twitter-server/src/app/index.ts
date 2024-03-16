@@ -2,7 +2,9 @@ import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import express from 'express';
 import bodyParser from 'body-parser';
-import { prismaClient } from '../clients/db';
+// import { prismaClient } from '../clients/db';
+import axios from 'axios';
+import {User} from './user'
 // to get the data from the server we query the data 
 // when we want to send data to the server we use mutation
 
@@ -14,16 +16,22 @@ export async function initServer(){
     
     const graphqlServer = new ApolloServer({
         // typeDefs is a string that contains the schema definition language (SDL) that defines the GraphQL schema.  
-        typeDefs:`    
+        typeDefs:`
+
+        ${User.types}
         type Query{
-            sayHello: String 
+            
+            ${User.queries}
         }
 
         `,
         resolvers:{
+          
+            
+
             Query:{
-                sayHello:()=>`Hello from GraphQL Server!`
-            },
+                ...User.resolvers.queries
+            }
         },
       });
 
