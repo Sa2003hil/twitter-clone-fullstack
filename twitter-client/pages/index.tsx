@@ -9,7 +9,8 @@ import { CiBookmarkPlus } from "react-icons/ci";
 import { IoPerson } from "react-icons/io5";
 import React, { useCallback } from "react";
 import FeedCard from "@/components/FeedCard";
-import { GoogleLogin } from '@react-oauth/google'
+import { CredentialResponse, GoogleLogin } from '@react-oauth/google'
+import { toast } from 'react-hot-toast'
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -29,7 +30,13 @@ const sideBarMenuItems: TwitterSidebarButton[] = [
 ]
 
 export default function Home() {
-  const handleLoginWithGoogle = useCallback((cred: CredentialResponse) => { }, [])
+  const handleLoginWithGoogle = useCallback(async (cred: CredentialResponse) => {
+    const googleToken = cred.credential;
+    if (!googleToken) toast.error(`Google Token not found`);
+
+
+
+  }, [])
   return (
     <div className={inter.className}>
       <div className="grid grid-cols-12 h-screen w-screen px-52">
