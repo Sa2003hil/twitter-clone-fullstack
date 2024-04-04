@@ -17,6 +17,7 @@ const server_1 = require("@apollo/server");
 const express4_1 = require("@apollo/server/express4");
 const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
+const cors_1 = __importDefault(require("cors"));
 const user_1 = require("./user");
 // to get the data from the server we query the data
 // when we want to send data to the server we use mutation
@@ -24,6 +25,7 @@ function initServer() {
     return __awaiter(this, void 0, void 0, function* () {
         const app = (0, express_1.default)();
         app.use(body_parser_1.default.json());
+        app.use((0, cors_1.default)());
         const graphqlServer = new server_1.ApolloServer({
             // typeDefs is a string that contains the schema definition language (SDL) that defines the GraphQL schema.
             typeDefs: `

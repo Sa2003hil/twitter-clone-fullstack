@@ -11,28 +11,41 @@ import React, { useCallback } from "react";
 import FeedCard from "@/components/FeedCard";
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google'
 import { toast } from 'react-hot-toast'
+import { graphqlClient } from "@/clients/api";
+import { verifyUsertGoogleTokenQuery } from "@/graphql/query/user";
 
 const inter = Inter({ subsets: ["latin"] })
 
 interface TwitterSidebarButton {
+  id: number
   title: String,
   icon: React.ReactNode,
 }
 
 const sideBarMenuItems: TwitterSidebarButton[] = [
-  { title: "Home", icon: < HiHome size={24} className="" /> },
-  { title: "Explore", icon: < FiHash size={24} className="" /> },
-  { title: "Notifications", icon: < IoNotificationsOutline size={24} className="" /> },
-  { title: "Messages", icon: <  FaRegEnvelope size={24} className="" /> },
-  { title: "Bookmark", icon: <CiBookmarkPlus size={24} className="" /> },
-  { title: "Profile", icon: <IoPerson size={24} className="" /> }
+  { id: 1, title: "Home", icon: < HiHome size={24} className="" /> },
+  { id: 2, title: "Explore", icon: < FiHash size={24} className="" /> },
+  { id: 3, title: "Notifications", icon: < IoNotificationsOutline size={24} className="" /> },
+  { id: 4, title: "Messages", icon: <  FaRegEnvelope size={24} className="" /> },
+  { id: 5, title: "Bookmark", icon: <CiBookmarkPlus size={24} className="" /> },
+  { id: 6, title: "Profile", icon: <IoPerson size={24} className="" /> }
 
 ]
 
 export default function Home() {
   const handleLoginWithGoogle = useCallback(async (cred: CredentialResponse) => {
     const googleToken = cred.credential;
-    if (!googleToken) toast.error(`Google Token not found`);
+    if (!googleToken) return toast.error(`Google Token not found`);
+
+    const { verifyGoogleToken } = await graphqlClient.request(verifyUsertGoogleTokenQuery, {
+      token: googleToken
+    });
+
+    toast.success('verified Success');
+    console.log(verifyGoogleToken);
+
+
+    if (verifyGoogleToken) window.localStorage.setItem('twitter_token', verifyGoogleToken)
 
 
 
@@ -50,7 +63,7 @@ export default function Home() {
                 sideBarMenuItems.map(item =>
                   <li
                     className="flex justify-start  items-center transition-all gap-3 hover:bg-gray-900 hover:cursor-pointer  rounded-full px-4 py-2 w-fit"
-                    key={item.title}>
+                    key={item.id}>
                     <span>{item.icon}</span>
                     <span>{item.title}</span>
                   </li>
@@ -72,7 +85,7 @@ export default function Home() {
         </div>
         <div className="col-span-3">
           <div className="border p-5">
-            <GoogleLogin onSuccess={cred => console.log(cred)} />
+            <GoogleLogin onSuccess={handleLoginWithGoogle} />
           </div>
         </div>
       </div>

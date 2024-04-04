@@ -2,6 +2,7 @@ import { ApolloServer } from '@apollo/server'
 import { expressMiddleware } from '@apollo/server/express4'
 import express from 'express'
 import bodyParser from 'body-parser'
+import cors from 'cors'
 // import { prismaClient } from '../clients/db';
 import axios from 'axios'
 import { User } from './user'
@@ -12,6 +13,7 @@ export async function initServer () {
   const app = express()
 
   app.use(bodyParser.json())
+  app.use(cors())
 
   const graphqlServer = new ApolloServer({
     // typeDefs is a string that contains the schema definition language (SDL) that defines the GraphQL schema.
