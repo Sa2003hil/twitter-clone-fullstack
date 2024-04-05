@@ -51,7 +51,7 @@ const queries = {
     }),
     getCurrentUser: (parent, args, ctx) => __awaiter(void 0, void 0, void 0, function* () {
         var _b;
-        console.log(ctx);
+        // console.log(ctx)
         const id = (_b = ctx.user) === null || _b === void 0 ? void 0 : _b.id;
         if (!id)
             return null;

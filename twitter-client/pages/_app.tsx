@@ -3,7 +3,7 @@ import type { AppProps } from "next/app";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools/production";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 
 
