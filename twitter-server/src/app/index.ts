@@ -6,6 +6,8 @@ import cors from 'cors'
 // import { prismaClient } from '../clients/db';
 import axios from 'axios'
 import { User } from './user'
+import { GraphqlContext } from '../interfaces'
+import JWTService from '../services/jwt'
 // to get the data from the server we query the data
 // when we want to send data to the server we use mutation
 
@@ -15,7 +17,7 @@ export async function initServer () {
   app.use(bodyParser.json())
   app.use(cors())
 
-  const graphqlServer = new ApolloServer({
+  const graphqlServer = new ApolloServer<GraphqlContext>({
     // typeDefs is a string that contains the schema definition language (SDL) that defines the GraphQL schema.
     typeDefs: `
 
@@ -34,7 +36,20 @@ export async function initServer () {
   })
 
   await graphqlServer.start()
-  app.use('/graphql', expressMiddleware(graphqlServer))
+  app.use(
+    '/graphql',
+    expressMiddleware(graphqlServer, {
+      context: async ({ req, res }) => {
+        return {
+          user: req.headers.authorization
+            ? JWTService.decodeToken(
+                req.headers.authorization.split('Bearer ')[1]
+              )
+            : undefined
+        }
+      }
+    })
+  )
 
   return app
 }
