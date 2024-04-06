@@ -45,7 +45,7 @@ const SingIn: React.FC = () => {
 
 
     }, [queryClient])
-    return <div className="flex items-center gap-14 mt-[4%] justify-center m-auto">
+    return <div className="flex items-center h-full gap-14 mt-[4%] justify-center m-auto">
         <div className=" flex items-center justify-center p-20">
             <Image src={TwiiterLogo} className=" " alt="" height={300} width={300} />
         </div>
@@ -54,9 +54,11 @@ const SingIn: React.FC = () => {
             <p className="text-white mt-14 text-3xl font-extrabold">Join today.</p>
 
             <div className="mt-6 flex gap-4 flex-col overflow-hidden" >
-                {!user && <div className="overflow-hidden rounded-full w-60">
-                    <GoogleLogin onSuccess={handleLoginWithGoogle} />
-                </div>}
+                <button className="bg-white flex gap-2 items-center justify-center rounded-full w-64 ">
+                    {!user && <div className="overflow-hidden ">
+                        <GoogleLogin onSuccess={handleLoginWithGoogle} />
+                    </div>}
+                </button>
                 <button className="bg-white flex gap-2 items-center justify-center rounded-full w-64 p-2">
                     <Image src={AppleLog} alt="Sign in with Twitter" height={30} width={20} />
                     <p className="text-black font-bold">Sign up with Apple</p>

@@ -7,7 +7,7 @@ import { IoNotificationsOutline } from "react-icons/io5"
 import { FaRegEnvelope } from "react-icons/fa";
 import { CiBookmarkPlus } from "react-icons/ci";
 import { IoPerson } from "react-icons/io5";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import FeedCard from "@/components/FeedCard";
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google'
 import { toast } from 'react-hot-toast'
@@ -20,6 +20,8 @@ import { MdOutlineGifBox } from "react-icons/md";
 import { FaRegSmile } from "react-icons/fa";
 import { useQueryClient } from "@tanstack/react-query";
 import SignIn from '@/components/Main'
+import { Spinner } from "@nextui-org/react";
+import ModalPop from "@/components/Modal";
 
 
 const inter = Inter({ subsets: ["latin"] })
@@ -45,6 +47,8 @@ export default function Home() {
   const { user } = useCurrentUser();
   const queryClient = useQueryClient();
 
+  const [isOpen, setIsOpen] = useState(false);
+
 
   const handleSelectImage = useCallback(() => {
     const input = document.createElement('input');
@@ -54,6 +58,18 @@ export default function Home() {
   }, [])
 
   console.log(user);
+
+
+
+  const handleLogOut = (() => {
+    setIsOpen(true)
+  })
+
+  // const handleLogOut = useCallback(() => {
+  //   window.localStorage.removeItem('twitter_token');
+  //   toast.success('Logged Out Successfully')
+  //   queryClient.invalidateQueries({ queryKey: ['current-user'] })
+  // }, [queryClient])
 
   const handleLoginWithGoogle = useCallback(async (cred: CredentialResponse) => {
     const googleToken = cred.credential;
@@ -99,7 +115,7 @@ export default function Home() {
           </div>
           {
             user &&
-            <div className="absolute bottom-5 bg-slate-900 w-48 rounded-full p-1 flex items-center justify-center gap-3">
+            <div onClick={handleLogOut} className="absolute cursor-pointer bottom-5 bg-slate-900 w-48 rounded-full p-1 flex items-center justify-center gap-3">
               {user && user.profileImageURL && <Image src={user?.profileImageURL} className="rounded-full" alt="profile_img" height={60} width={60} />}
               <div className="flex flex-col ">
                 <div className="flex">
@@ -110,13 +126,19 @@ export default function Home() {
                   <p className="text-gray-500 text-xs">{user.email}</p>
                 </div>
               </div>
-              <button>  <HiOutlineDotsHorizontal className="flex items-center justify-center mr-4" /></button>
+              {/* <button> <HiOutlineDotsHorizontal className="flex items-center justify-center mr-4" /></button> */}
+              {isOpen && <ModalPop />}
             </div>
           }
         </div>
         <div className="col-span-7 border-r-[.2px] border-l-[.2px] border-slate-500">
           <div>
-            <div className="border border-r-0 border-l-0 border-b-0 border-gray-700 p-4  transition-all cursor-pointer">
+            <div className="flex w-[38%] h-14 fixed bg-black bg-opacity-50 backdrop-blur-lg gap-40 items-center justify-center p-2">
+              <div className="text-white font-semibold flex items-center justify-center flex-col text-center  gap-3">For You <p className="bg-blue-400 w-8 h-1 rounded-full"></p></div>
+              <div className="text-slate-500 font-normal flex items-center justify-center">Following</div>
+            </div>
+
+            <div className="border border-r-0 mt-12 border-l-0 border-b-0 border-gray-700 p-4  transition-all cursor-pointer">
               <div className="grid grid-cols-12">
                 <div className="col-span-1">
                   {user?.profileImageURL && <Image src={user?.profileImageURL} className="rounded-full" alt="" height={70} width={70} />}
@@ -136,6 +158,7 @@ export default function Home() {
               </div>
             </div>
           </div>
+
           <FeedCard />
           <FeedCard />
           <FeedCard />
