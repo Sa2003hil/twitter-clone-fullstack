@@ -21,7 +21,7 @@ export default function ModalPop() {
         <>
             {/* <Button onPress={onOpen} >...</Button> */}
             <button onClick={onOpen}> <HiOutlineDotsHorizontal className="flex items-center justify-center mr-4" /></button>
-            <button></button>
+            {/* <button onClick={onOpen}></button> */}
             <Modal
                 backdrop="opaque"
                 isOpen={isOpen}

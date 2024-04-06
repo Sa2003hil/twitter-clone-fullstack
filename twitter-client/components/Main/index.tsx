@@ -45,7 +45,7 @@ const SingIn: React.FC = () => {
 
 
     }, [queryClient])
-    return <div className="flex items-center h-full gap-14 mt-[4%] justify-center m-auto">
+    return <div className="flex items-center h-screen gap-14  justify-center m-auto">
         <div className=" flex items-center justify-center p-20">
             <Image src={TwiiterLogo} className=" " alt="" height={300} width={300} />
         </div>
