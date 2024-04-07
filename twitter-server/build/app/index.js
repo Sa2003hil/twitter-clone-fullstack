@@ -19,6 +19,7 @@ const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const cors_1 = __importDefault(require("cors"));
 const user_1 = require("./user");
+const tweet_1 = require("./tweet");
 const jwt_1 = __importDefault(require("../services/jwt"));
 // to get the data from the server we query the data
 // when we want to send data to the server we use mutation
@@ -32,15 +33,19 @@ function initServer() {
             typeDefs: `
 
         ${user_1.User.types}
+        ${tweet_1.Tweet.types}
         type Query{
             
             ${user_1.User.queries}
+            ${tweet_1.Tweet.queries}
+        }
+
+        type Mutation{
+            ${tweet_1.Tweet.mutations}
         }
 
         `,
-            resolvers: {
-                Query: Object.assign({}, user_1.User.resolvers.queries)
-            }
+            resolvers: Object.assign(Object.assign({ Query: Object.assign(Object.assign({}, user_1.User.resolvers.queries), tweet_1.Tweet.resolvers.queries), Mutation: Object.assign({}, tweet_1.Tweet.resolvers.mutations) }, tweet_1.Tweet.resolvers.extraResolvers), user_1.User.resolvers.extraResolvers)
         });
         yield graphqlServer.start();
         app.use('/graphql', (0, express4_1.expressMiddleware)(graphqlServer, {

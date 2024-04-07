@@ -12,7 +12,11 @@ const FeedCard: React.FC = () => {
                 <Image src="https://avatars.githubusercontent.com/u/115913715?v=4" className="rounded-full" alt="" height={60} width={60} />
             </div>
             <div className="col-span-11">
-                <h5 className="font-medium">Sahil</h5>
+                <div className="flex gap-2">
+                    <h5 className="font-medium">Sahil</h5>
+                    <p className="text-[#71767b] text-sm">@sa2003hil</p>
+
+                </div>
                 <p className="text-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit eveniet molestias tempora, itaque esse et magnam numquam soluta quidem!</p>
                 <div className="flex justify-between mt-5 text-xl items-center p-2 w-[90%]">
                     <div>

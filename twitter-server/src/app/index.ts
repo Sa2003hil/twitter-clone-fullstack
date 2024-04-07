@@ -6,6 +6,7 @@ import cors from 'cors'
 // import { prismaClient } from '../clients/db';
 import axios from 'axios'
 import { User } from './user'
+import { Tweet } from './tweet'
 import { GraphqlContext } from '../interfaces'
 import JWTService from '../services/jwt'
 // to get the data from the server we query the data
@@ -22,16 +23,28 @@ export async function initServer () {
     typeDefs: `
 
         ${User.types}
+        ${Tweet.types}
         type Query{
             
             ${User.queries}
+            ${Tweet.queries}
+        }
+
+        type Mutation{
+            ${Tweet.mutations}
         }
 
         `,
     resolvers: {
       Query: {
-        ...User.resolvers.queries
-      }
+        ...User.resolvers.queries,
+        ...Tweet.resolvers.queries
+      },
+      Mutation: {
+        ...Tweet.resolvers.mutations
+      },
+      ...Tweet.resolvers.extraResolvers,
+      ...User.resolvers.extraResolvers
     }
   })
 
